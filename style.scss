@@ -1,0 +1,193 @@
+@import url(https://fonts.googleapis.com/css?family=VT323);
+$MAIN_COLOR: #ffd466;
+$M_SHADOW_COLOR: #a0853f;
+$BG_COLOR: #28334a;
+$RESET_COLOR: #ff1e56;
+$TXT1: #6340ff;
+$TXT2: #169e3e;
+$TXT3: #ff1e56;
+$TXT4: #142bff;
+$TXT5: #b60c0c;
+$TXT6: #00c0ce;
+$TXT7: #000000;
+$TXT8: #868686;
+
+@mixin v_center {
+  display: flex;
+  align-items: center;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  outline: none;
+}
+
+body {
+  @include v_center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  background-color: $BG_COLOR;
+
+  #container {
+    color: $MAIN_COLOR;
+
+    @media screen and (min-width: 1024px) and (min-height: 768px) {
+      padding: 3rem 2rem;
+      border-radius: 5px;
+      border: 5px solid $MAIN_COLOR;
+      box-shadow: 0 10px 0px $M_SHADOW_COLOR;
+    }
+
+    .title {
+      @include v_center;
+      justify-content: center;
+      text-shadow: 0 4px 0 $M_SHADOW_COLOR;
+      font-size: 2.5rem;
+    }
+
+    .menu {
+      @include v_center;
+      justify-content: space-around;
+      margin-top: 1rem;
+      font-size: 1.5rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+        "Open Sans", "Helvetica Neue", sans-serif;
+      text-shadow: 0 2px 0 $M_SHADOW_COLOR;
+
+      .timer,
+      .flag {
+        width: 28px;
+      }
+
+      .reset {
+        border: 2px solid darken($RESET_COLOR, 20%);
+        box-shadow: 0 3px 0 darken($RESET_COLOR, 40%);
+        background-color: $RESET_COLOR;
+        border-radius: 5px;
+        width: 1.5rem;
+        height: 1.5rem;
+        transition: all 0.1s;
+
+        &:active {
+          box-shadow: none;
+          transform: translateY(3px);
+        }
+
+        &:hover {
+          border: 2px solid darken($RESET_COLOR, 15%);
+          box-shadow: 0 3px 0 darken($RESET_COLOR, 35%);
+          background-color: lighten($RESET_COLOR, 5%);
+        }
+      }
+    }
+
+    .tile_wrapper {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      grid-template-rows: repeat(9, 1fr);
+      margin: 2rem 0;
+      gap: 2px;
+
+      .tile {
+        @include v_center;
+        cursor: pointer;
+        justify-content: center;
+        width: 35px;
+        height: 35px;
+        background-color: $MAIN_COLOR;
+
+        >p {
+          display: none;
+          color: $BG_COLOR;
+          font-family: "VT323";
+          font-size: 1.5rem;
+        }
+
+        &:hover {
+          background-color: lighten($MAIN_COLOR, 10%);
+        }
+
+        .click {
+          display: inline;
+        }
+
+        .TXT● {
+          font-size: 0.5rem;
+          color: $BG_COLOR;
+        }
+
+        .TXT1 {
+          color: $TXT1;
+        }
+
+        .TXT2 {
+          color: $TXT2;
+        }
+
+        .TXT3 {
+          color: $TXT3;
+        }
+
+        .TXT4 {
+          color: $TXT4;
+        }
+
+        .TXT5 {
+          color: $TXT5;
+        }
+
+        .TXT6 {
+          color: $TXT6;
+        }
+
+        .TXT7 {
+          color: $TXT7;
+        }
+
+        .TXT8 {
+          color: $TXT8;
+        }
+      }
+    }
+
+    .level {
+      @include v_center;
+      justify-content: space-between;
+
+      >button {
+        letter-spacing: 2px;
+        font-family: "VT323";
+        border: 2px solid $MAIN_COLOR;
+        background-color: transparent;
+        color: white;
+        font-size: 1.5rem;
+        padding: 3px 10px;
+        border-radius: 5px;
+        box-shadow: 0 5px 0 $M_SHADOW_COLOR;
+        transition: all 0.1s;
+        flex: 1;
+
+        &:active {
+          box-shadow: none;
+          transform: translateY(5px);
+        }
+
+        &:hover {
+          transition: all 0.3s;
+          color: $BG_COLOR;
+          border: 2px solid darken($MAIN_COLOR, 20%);
+          background-color: $MAIN_COLOR;
+        }
+      }
+
+      .normal {
+        margin: 0 1rem;
+      }
+    }
+  }
+}
