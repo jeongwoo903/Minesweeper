@@ -1,15 +1,17 @@
 // HTML요소에 대한 정보 불러오기
+const container = document.querySelector("#container");
 const tileWrapper = document.querySelector(".tile_wrapper");
 const levelElem = document.querySelector(".level");
 const resetBtn = document.querySelector(".reset");
-const timerBtn = document.querySelector(".timer");
+const timerElem = document.querySelector(".timer");
 let pushColor = "#ffb800";
+
 
 // 타일 배열의 최외각 배열 선언
 let tileArr = [];
 
 // 복제될 타일 생성
-let tile = document.createElement("div");
+const tile = document.createElement("div");
 tile.classList.add("tile");
 
 // 난이토 초기 세팅
@@ -18,6 +20,13 @@ let saveLevel = "EASY";
 // 타이머 초기 세팅
 let time = 0;
 let timerTrigger = null;
+
+// 게임 오버 시, 클릭 금지 블록 생성
+let blockElem = null;
+
+// 클릭 시, 카운트 됨
+let countClick = 0;
+
 
 // 난이도에 따른 각각의 정보 세팅
 //level: [row, col, mine, flag]
@@ -30,6 +39,7 @@ const level = {
 // 타일 생성 ( css조작 / 타일 삽입 / 배열 생성 / 지뢰 생성 / 지뢰 주변 숫자 설정)
 function setTile([row, col, mine, flag]) {
     let countArr = 0;
+    countClick = 0;
     tileArr = [];
 
     tileWrapper.style.gridTemplateColumns = `repeat(${row}, 1fr)`;
@@ -65,7 +75,7 @@ function setTile([row, col, mine, flag]) {
 
     timerTrigger = false;
     time = 0;
-    timerBtn.innerHTML = time;
+    timerElem.innerHTML = time;
     console.log(tileArr);
 }
 
@@ -95,6 +105,10 @@ function clearTile() {
 
 // 난이도 설정 (타일 삭제)
 function levelHandler(e) {
+    if (container.childNodes[9]) {
+        container.removeChild(container.childNodes[9]);
+    }
+
     let currnetLevel = e.target.textContent;
 
     if (e.target.className === "level") {
@@ -117,15 +131,18 @@ resetBtn.addEventListener("click", levelHandler);
 // 타일 클릭 (타일 숫자 표시, 타이머 시작)
 function clickHandler(e) {
     (e.target.classList.contains("click") || e.target.classList.contains("tile_wrapper")) ? true : e.target.childNodes[0].classList.add("click");
+    countClick++;
+    console.log(countClick);
 
     // 타이머
     if (timerTrigger === false) {
         timerTrigger = true;
 
         let timer = setInterval(() => {
-            (timerTrigger === false && time === 0) ? clearInterval(timer) : timerBtn.innerText = time++;
+            (timerTrigger === false && time === 0) ? clearInterval(timer) : timerElem.innerText = time++;
         }, 1000);
     }
+
 
     for (let i = 0; i < tileWrapper.childNodes.length; i++) {
         if (e.target === tileWrapper.childNodes[i]) {
@@ -133,8 +150,11 @@ function clickHandler(e) {
             let x = i - (y * tileArr[0].length);
 
             e.target.style.backgroundColor = pushColor;
-            if (e.target.childNodes[0].textContent === "●") console.log("게임 끝!");
-            else if (e.target.childNodes[0].textContent === "0") openTile(x, y);
+            if (e.target.childNodes[0].textContent === "●") gameOver();
+            else if (e.target.childNodes[0].textContent === "0") {
+                e.target.childNodes[0].textContent = "";
+                openTile(x, y);
+            }
             else true;
         }
         else true;
@@ -143,7 +163,7 @@ function clickHandler(e) {
 
 // 지뢰 탐지
 function openTile(x, y) {
-    if (tileArr[y][x] === 0) tileArr[y][x] = ""
+    if (tileArr[y][x] === 0) tileArr[y][x] = "";
     let iEnd = y + 2;
     let jEnd = x + 2;
 
@@ -166,12 +186,28 @@ function openTile(x, y) {
                 }
 
                 if (tileArr[i][j] === 0) {
+                    numElem.childNodes[0].textContent = "";
                     openTile(j, i);
                 }
 
             }
         }
     }
+}
+
+function gameOver() {
+    // 타이머 / 플래그 설정 / congratuation
+
+    blockElem = document.createElement("div");
+    blockElem.classList.add("block");
+
+    if (tileArr[0].length === 9) blockElem.classList.add("easy_block");
+    else if (tileArr[0].length === 16) blockElem.classList.add("normal_block");
+    else if (tileArr[0].length === 30) blockElem.classList.add("hard_block");
+
+    if (matchMedia("screen and (max-width: 1183px)").matches) blockElem.innerText = `[ GAME OVER! ] \n Record: ${time}s \n PC have another Level!`;
+    else blockElem.innerText = `[ GAME OVER! ] \n Record: ${time}s`;
+    container.appendChild(blockElem);
 }
 
 tileWrapper.addEventListener("mousedown", clickHandler);
@@ -191,6 +227,8 @@ tileWrapper.addEventListener("mousedown", clickHandler);
 // 삼함연산자 실수 (지뢰가 랜럼으로 같은 값일때도 주변에 숫자를 더해줌)
 
 // setInterval clearInterval
+
+// removechild시 class는 삭제되지 않음.
 
 // const level = new Map();
 // level.set("EASY", [9, 9]);

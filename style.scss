@@ -97,7 +97,7 @@ body {
         height: 35px;
         background-color: $MAIN_COLOR;
 
-        >p {
+        > p {
           display: none;
           color: $BG_COLOR;
           font-family: "VT323";
@@ -155,7 +155,7 @@ body {
       @include v_center;
       justify-content: space-between;
 
-      >button {
+      > button {
         letter-spacing: 2px;
         font-family: "VT323";
         border: 2px solid $MAIN_COLOR;
@@ -184,6 +184,53 @@ body {
       .normal {
         margin: 0 1rem;
       }
+
+      @media screen and (max-width: 1183px) {
+        .normal {
+          margin: 0 0 0 1rem;
+        }
+
+        .hard {
+          display: none;
+        }
+      }
+
+      @media screen and (max-width: 800px) {
+        .normal {
+          display: none;
+        }
+      }
+    }
+
+    .block {
+      width: 331px;
+      height: 331px;
+      transform: translateY(-397px);
+      position: absolute;
+      @include v_center;
+      justify-content: center;
+      color: $TXT3;
+      font-family: "VT323";
+      font-size: 33px;
+      text-align: center;
+    }
+
+    .easy_block {
+      width: 331px;
+      height: 331px;
+      transform: translateY(-397px);
+    }
+
+    .normal_block {
+      width: 591px;
+      height: 591px;
+      transform: translateY(-656px);
+    }
+
+    .hard_block {
+      width: 1108px;
+      height: 591px;
+      transform: translateY(-656px);
     }
   }
 }

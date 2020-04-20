@@ -219,4 +219,61 @@ body #container .level > button:hover {
 body #container .level .normal {
   margin: 0 1rem;
 }
+
+@media screen and (max-width: 1183px) {
+  body #container .level .normal {
+    margin: 0 0 0 1rem;
+  }
+  body #container .level .hard {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  body #container .level .normal {
+    display: none;
+  }
+}
+
+body #container .block {
+  width: 331px;
+  height: 331px;
+  -webkit-transform: translateY(-397px);
+          transform: translateY(-397px);
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #ff1e56;
+  font-family: "VT323";
+  font-size: 33px;
+  text-align: center;
+}
+
+body #container .easy_block {
+  width: 331px;
+  height: 331px;
+  -webkit-transform: translateY(-397px);
+          transform: translateY(-397px);
+}
+
+body #container .normal_block {
+  width: 591px;
+  height: 591px;
+  -webkit-transform: translateY(-656px);
+          transform: translateY(-656px);
+}
+
+body #container .hard_block {
+  width: 1108px;
+  height: 591px;
+  -webkit-transform: translateY(-656px);
+          transform: translateY(-656px);
+}
 /*# sourceMappingURL=style.css.map */
