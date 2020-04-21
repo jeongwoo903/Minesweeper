@@ -13,7 +13,7 @@ let tileArr = [];
 const tile = document.createElement("div");
 tile.classList.add("tile");
 
-// 난이토 초기 세팅
+// 난이도 초기 세팅
 let saveLevel = "EASY";
 
 // 타이머 초기 세팅
@@ -53,9 +53,9 @@ function setTile([row, col, mine]) {
         let x = Math.floor(Math.random() * row);
         let y = Math.floor(Math.random() * col);
 
-        if (tileArr[y][x] === "●") {
+        if (tileArr[y][x] === "●")
             i--;
-        } else {
+        else {
             tileArr[y][x] = "●";
             countMines(x, y, row - 1, col - 1, tileArr);
         }
@@ -81,11 +81,10 @@ function countMines(x, y, row, col, tileArr) {
 
     for (let i = y - 1; i < iEnd; i++) {
         for (let j = x - 1; j < jEnd; j++) {
-            if (j < 0 || i < 0 || j > row || i > col || (tileArr[i][j] === "●")) {
+            if (j < 0 || i < 0 || j > row || i > col || (tileArr[i][j] === "●"))
                 continue;
-            } else {
+            else
                 tileArr[i][j] += 1;
-            }
         }
     }
 }
@@ -100,15 +99,14 @@ function clearTile() {
 
 // 난이도 설정 (타일 삭제)
 function levelHandler(e) {
-    if (container.childNodes[9]) {
+    if (container.childNodes[9])
         container.removeChild(container.childNodes[9]);
-    }
+
 
     let currnetLevel = e.target.textContent;
 
-    if (e.target.className === "level") {
+    if (e.target.className === "level")
         true;
-    }
     else if (e.target.className === "reset") {
         clearTile();
         (saveLevel === "EASY") ? setTile(level.EASY) : setTile(level[saveLevel]);
@@ -125,7 +123,8 @@ resetBtn.addEventListener("click", levelHandler);
 
 // 타일 클릭 (타일 숫자 표시, 타이머 시작)
 function clickHandler(e) {
-    (e.target.classList.contains("click") || e.target.classList.contains("tile_wrapper")) ? true : e.target.childNodes[0].classList.add("click");
+    let tg = e.target;
+    (tg.classList.contains("click") || tg.classList.contains("tile_wrapper")) ? true : tg.childNodes[0].classList.add("click");
 
     // 타이머
     if (timerTrigger === false) {
@@ -137,14 +136,15 @@ function clickHandler(e) {
     }
 
     for (let i = 0; i < tileWrapper.childNodes.length; i++) {
-        if (e.target === tileWrapper.childNodes[i]) {
+        if (tg === tileWrapper.childNodes[i]) {
             let y = Math.floor(i / tileArr[0].length);
             let x = i - (y * tileArr[0].length);
 
-            e.target.style.backgroundColor = pushColor;
-            if (e.target.childNodes[0].textContent === "●") gameOver();
-            else if (e.target.childNodes[0].textContent === "0") {
-                e.target.childNodes[0].textContent = "";
+            tg.style.backgroundColor = pushColor;
+            if (tg.childNodes[0].textContent === "●")
+                gameOver();
+            else if (tg.childNodes[0].textContent === "0") {
+                tg.childNodes[0].textContent = "";
                 openTile(x, y);
             }
             else true;
@@ -158,27 +158,26 @@ function clickHandler(e) {
 function gameClear() {
     let gameClearTrigger = 0;
 
-    for (let i = 0; i < tileWrapper.childNodes.length; i++) {
+    for (let i = 0; i < tileWrapper.childNodes.length; i++)
         (tileWrapper.childNodes[i].childNodes[0].classList.contains("click")) ? gameClearTrigger++ : true;
-    }
 
-    if (gameClearTrigger === 71 || gameClearTrigger === 216 || gameClearTrigger === 318) {
+    if (gameClearTrigger === 71 || gameClearTrigger === 216 || gameClearTrigger === 318)
         gameOver(gameClearTrigger);
-    }
 }
 
 // 지뢰 탐지
 function openTile(x, y) {
-    if (tileArr[y][x] === 0) tileArr[y][x] = "";
+    if (tileArr[y][x] === 0)
+        tileArr[y][x] = "";
+
     let iEnd = y + 2;
     let jEnd = x + 2;
 
 
     for (let i = y - 1; i < iEnd; i++) {
         for (let j = x - 1; j < jEnd; j++) {
-            if (j < 0 || i < 0 || j > (tileArr[0].length - 1) || i > (tileArr.length - 1) || (i === y && j === x)) {
+            if (j < 0 || i < 0 || j > (tileArr[0].length - 1) || i > (tileArr.length - 1) || (i === y && j === x))
                 continue;
-            }
             else {
                 let arrNum = 0;
                 if (tileArr[0].length === 9) arrNum = 10 * i - (i - j);
@@ -187,7 +186,7 @@ function openTile(x, y) {
                 let numElem = tileWrapper.childNodes[arrNum];
 
                 if (!numElem.childNodes[0].classList.contains("click")) {
-                    numElem.childNodes[0].classList.add("click");;
+                    numElem.childNodes[0].classList.add("click");
                     numElem.style.backgroundColor = pushColor;
                 }
 
@@ -205,17 +204,24 @@ function gameOver(trigger) {
     blockElem = document.createElement("div");
     blockElem.classList.add("block");
 
-    if (tileArr[0].length === 9) blockElem.classList.add("easy_block");
-    else if (tileArr[0].length === 16) blockElem.classList.add("normal_block");
-    else if (tileArr[0].length === 30) blockElem.classList.add("hard_block");
+    if (tileArr[0].length === 9)
+        blockElem.classList.add("easy_block");
+    else if (tileArr[0].length === 16)
+        blockElem.classList.add("normal_block");
+    else if (tileArr[0].length === 30)
+        blockElem.classList.add("hard_block");
 
     if (trigger === 71 || trigger === 216 || trigger === 318) {
         blockElem.style.color = "#26ff00";
-        if (matchMedia("screen and (max-width: 1183px)").matches) blockElem.innerText = `[ CONGRATULATION! ] \n Record: ${time}s \n PC has another Level!`;
-        else blockElem.innerText = `[ CONGRATULATION! ] \n Record: ${time}s`;
+        if (matchMedia("screen and (max-width: 1183px)").matches)
+            blockElem.innerText = `[ CONGRATULATION! ] \n Record: ${time}s \n PC has another Level!`;
+        else
+            blockElem.innerText = `[ CONGRATULATION! ] \n Record: ${time}s`;
     } else {
-        if (matchMedia("screen and (max-width: 1183px)").matches) blockElem.innerText = `[ GAME OVER! ] \n Record: ${time}s \n PC has another Level!`;
-        else blockElem.innerText = `[ GAME OVER! ] \n Record: ${time}s`;
+        if (matchMedia("screen and (max-width: 1183px)").matches)
+            blockElem.innerText = `[ GAME OVER! ] \n Record: ${time}s \n PC has another Level!`;
+        else
+            blockElem.innerText = `[ GAME OVER! ] \n Record: ${time}s`;
     }
 
     container.appendChild(blockElem);
