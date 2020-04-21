@@ -53,8 +53,7 @@ function setTile([row, col, mine]) {
         let x = Math.floor(Math.random() * row);
         let y = Math.floor(Math.random() * col);
 
-        if (tileArr[y][x] === "●")
-            i--;
+        if (tileArr[y][x] === "●") { i--; }
         else {
             tileArr[y][x] = "●";
             countMines(x, y, row - 1, col - 1, tileArr);
@@ -81,10 +80,8 @@ function countMines(x, y, row, col, tileArr) {
 
     for (let i = y - 1; i < iEnd; i++) {
         for (let j = x - 1; j < jEnd; j++) {
-            if (j < 0 || i < 0 || j > row || i > col || (tileArr[i][j] === "●"))
-                continue;
-            else
-                tileArr[i][j] += 1;
+            if (j < 0 || i < 0 || j > row || i > col || (tileArr[i][j] === "●")) { continue; }
+            else { tileArr[i][j] += 1; }
         }
     }
 }
@@ -99,14 +96,12 @@ function clearTile() {
 
 // 난이도 설정 (타일 삭제)
 function levelHandler(e) {
-    if (container.childNodes[9])
-        container.removeChild(container.childNodes[9]);
+    if (container.childNodes[9]) { container.removeChild(container.childNodes[9]); }
 
 
     let currnetLevel = e.target.textContent;
 
-    if (e.target.className === "level")
-        true;
+    if (e.target.className === "level") { true; }
     else if (e.target.className === "reset") {
         clearTile();
         (saveLevel === "EASY") ? setTile(level.EASY) : setTile(level[saveLevel]);
@@ -141,15 +136,14 @@ function clickHandler(e) {
             let x = i - (y * tileArr[0].length);
 
             tg.style.backgroundColor = pushColor;
-            if (tg.childNodes[0].textContent === "●")
-                gameOver();
+            if (tg.childNodes[0].textContent === "●") { gameOver(); }
             else if (tg.childNodes[0].textContent === "0") {
                 tg.childNodes[0].textContent = "";
                 openTile(x, y);
             }
-            else true;
+            else { true; }
         }
-        else true;
+        else { true; }
     }
 
     gameClear();
@@ -158,17 +152,18 @@ function clickHandler(e) {
 function gameClear() {
     let gameClearTrigger = 0;
 
-    for (let i = 0; i < tileWrapper.childNodes.length; i++)
+    for (let i = 0; i < tileWrapper.childNodes.length; i++) {
         (tileWrapper.childNodes[i].childNodes[0].classList.contains("click")) ? gameClearTrigger++ : true;
+    }
 
-    if (gameClearTrigger === 71 || gameClearTrigger === 216 || gameClearTrigger === 318)
+    if (gameClearTrigger === 71 || gameClearTrigger === 216 || gameClearTrigger === 318) {
         gameOver(gameClearTrigger);
+    }
 }
 
 // 지뢰 탐지
 function openTile(x, y) {
-    if (tileArr[y][x] === 0)
-        tileArr[y][x] = "";
+    if (tileArr[y][x] === 0) { tileArr[y][x] = ""; }
 
     let iEnd = y + 2;
     let jEnd = x + 2;
@@ -176,13 +171,13 @@ function openTile(x, y) {
 
     for (let i = y - 1; i < iEnd; i++) {
         for (let j = x - 1; j < jEnd; j++) {
-            if (j < 0 || i < 0 || j > (tileArr[0].length - 1) || i > (tileArr.length - 1) || (i === y && j === x))
+            if (j < 0 || i < 0 || j > (tileArr[0].length - 1) || i > (tileArr.length - 1) || (i === y && j === x)) {
                 continue;
-            else {
+            } else {
                 let arrNum = 0;
-                if (tileArr[0].length === 9) arrNum = 10 * i - (i - j);
-                else if (tileArr[0].length === 16) arrNum = 17 * i - (i - j);
-                else if (tileArr[0].length === 30) arrNum = 30 * i + j;
+                if (tileArr[0].length === 9) { arrNum = 10 * i - (i - j); }
+                else if (tileArr[0].length === 16) { arrNum = 17 * i - (i - j); }
+                else if (tileArr[0].length === 30) { arrNum = 30 * i + j; }
                 let numElem = tileWrapper.childNodes[arrNum];
 
                 if (!numElem.childNodes[0].classList.contains("click")) {
@@ -204,24 +199,19 @@ function gameOver(trigger) {
     blockElem = document.createElement("div");
     blockElem.classList.add("block");
 
-    if (tileArr[0].length === 9)
-        blockElem.classList.add("easy_block");
-    else if (tileArr[0].length === 16)
-        blockElem.classList.add("normal_block");
-    else if (tileArr[0].length === 30)
-        blockElem.classList.add("hard_block");
+    if (tileArr[0].length === 9) { blockElem.classList.add("easy_block"); }
+    else if (tileArr[0].length === 16) { blockElem.classList.add("normal_block"); }
+    else if (tileArr[0].length === 30) { blockElem.classList.add("hard_block"); }
 
     if (trigger === 71 || trigger === 216 || trigger === 318) {
         blockElem.style.color = "#26ff00";
-        if (matchMedia("screen and (max-width: 1183px)").matches)
+        if (matchMedia("screen and (max-width: 1183px)").matches) {
             blockElem.innerText = `[ CONGRATULATION! ] \n Record: ${time}s \n PC has another Level!`;
-        else
-            blockElem.innerText = `[ CONGRATULATION! ] \n Record: ${time}s`;
+        } else { blockElem.innerText = `[ CONGRATULATION! ] \n Record: ${time}s`; }
     } else {
-        if (matchMedia("screen and (max-width: 1183px)").matches)
+        if (matchMedia("screen and (max-width: 1183px)").matches) {
             blockElem.innerText = `[ GAME OVER! ] \n Record: ${time}s \n PC has another Level!`;
-        else
-            blockElem.innerText = `[ GAME OVER! ] \n Record: ${time}s`;
+        } else { blockElem.innerText = `[ GAME OVER! ] \n Record: ${time}s`; }
     }
 
     container.appendChild(blockElem);
