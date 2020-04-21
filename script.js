@@ -6,7 +6,6 @@ const resetBtn = document.querySelector(".reset");
 const timerElem = document.querySelector(".timer");
 let pushColor = "#ffb800";
 
-
 // 타일 배열의 최외각 배열 선언
 let tileArr = [];
 
@@ -24,22 +23,18 @@ let timerTrigger = null;
 // 게임 오버 시, 클릭 금지 블록 생성
 let blockElem = null;
 
-// 클릭 시, 카운트 됨
-let countClick = 0;
-
 
 // 난이도에 따른 각각의 정보 세팅
-//level: [row, col, mine, flag]
+//level: [row, col, mine]
 const level = {
-    EASY: [9, 9, 10, 10],
-    NORMAL: [16, 16, 40, 40],
-    HARD: [30, 16, 99, 99]
+    EASY: [9, 9, 10],
+    NORMAL: [16, 16, 40],
+    HARD: [30, 16, 99]
 }
 
 // 타일 생성 ( css조작 / 타일 삽입 / 배열 생성 / 지뢰 생성 / 지뢰 주변 숫자 설정)
-function setTile([row, col, mine, flag]) {
+function setTile([row, col, mine]) {
     let countArr = 0;
-    countClick = 0;
     tileArr = [];
 
     tileWrapper.style.gridTemplateColumns = `repeat(${row}, 1fr)`;
@@ -131,8 +126,6 @@ resetBtn.addEventListener("click", levelHandler);
 // 타일 클릭 (타일 숫자 표시, 타이머 시작)
 function clickHandler(e) {
     (e.target.classList.contains("click") || e.target.classList.contains("tile_wrapper")) ? true : e.target.childNodes[0].classList.add("click");
-    countClick++;
-    console.log(countClick);
 
     // 타이머
     if (timerTrigger === false) {
@@ -142,7 +135,6 @@ function clickHandler(e) {
             (timerTrigger === false && time === 0) ? clearInterval(timer) : timerElem.innerText = time++;
         }, 1000);
     }
-
 
     for (let i = 0; i < tileWrapper.childNodes.length; i++) {
         if (e.target === tileWrapper.childNodes[i]) {
@@ -158,6 +150,20 @@ function clickHandler(e) {
             else true;
         }
         else true;
+    }
+
+    gameClear();
+}
+
+function gameClear() {
+    let gameClearTrigger = 0;
+
+    for (let i = 0; i < tileWrapper.childNodes.length; i++) {
+        (tileWrapper.childNodes[i].childNodes[0].classList.contains("click")) ? gameClearTrigger++ : true;
+    }
+
+    if (gameClearTrigger === 71 || gameClearTrigger === 216 || gameClearTrigger === 318) {
+        gameOver(gameClearTrigger);
     }
 }
 
@@ -195,9 +201,7 @@ function openTile(x, y) {
     }
 }
 
-function gameOver() {
-    // 타이머 / 플래그 설정 / congratuation
-
+function gameOver(trigger) {
     blockElem = document.createElement("div");
     blockElem.classList.add("block");
 
@@ -205,8 +209,15 @@ function gameOver() {
     else if (tileArr[0].length === 16) blockElem.classList.add("normal_block");
     else if (tileArr[0].length === 30) blockElem.classList.add("hard_block");
 
-    if (matchMedia("screen and (max-width: 1183px)").matches) blockElem.innerText = `[ GAME OVER! ] \n Record: ${time}s \n PC have another Level!`;
-    else blockElem.innerText = `[ GAME OVER! ] \n Record: ${time}s`;
+    if (trigger === 71 || trigger === 216 || trigger === 318) {
+        blockElem.style.color = "#26ff00";
+        if (matchMedia("screen and (max-width: 1183px)").matches) blockElem.innerText = `[ CONGRATULATION! ] \n Record: ${time}s \n PC has another Level!`;
+        else blockElem.innerText = `[ CONGRATULATION! ] \n Record: ${time}s`;
+    } else {
+        if (matchMedia("screen and (max-width: 1183px)").matches) blockElem.innerText = `[ GAME OVER! ] \n Record: ${time}s \n PC has another Level!`;
+        else blockElem.innerText = `[ GAME OVER! ] \n Record: ${time}s`;
+    }
+
     container.appendChild(blockElem);
 }
 

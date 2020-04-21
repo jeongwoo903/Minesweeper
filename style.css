@@ -78,6 +78,7 @@ body #container .menu .reset {
   height: 1.5rem;
   -webkit-transition: all 0.1s;
   transition: all 0.1s;
+  cursor: pointer;
 }
 
 body #container .menu .reset:active {
