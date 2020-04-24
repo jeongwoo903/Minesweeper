@@ -98,7 +98,6 @@ function clearTile() {
 function levelHandler(e) {
     if (container.childNodes[9]) { container.removeChild(container.childNodes[9]); }
 
-
     let currnetLevel = e.target.textContent;
 
     if (e.target.className === "level") { true; }
